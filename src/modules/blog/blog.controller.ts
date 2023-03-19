@@ -11,12 +11,13 @@ import {
   Req,
   Res,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-
 import { SystemResponse } from '../../libs/response-handler';
 import { BlogService } from './blog.service';
 import { BlogDto } from './dto/create-blog.dto';
+import { UpdateBlogDto } from './dto/update-blog.dto'
 import { Request, Response } from 'express';
 
 @ApiTags('blog')
@@ -43,7 +44,7 @@ export class BlogController {
         SystemResponse.success('Blog task is added successfully!', added),
       );
     } catch (err) {
-      return res.send(SystemResponse.internalServerError('Error', err.message));
+      return res.status(err.status).send(SystemResponse.internalServerError('Error', err.response));
     }
   }
 
@@ -66,7 +67,7 @@ export class BlogController {
         SystemResponse.success('Blog fetched successfully', data),
       );
     } catch (err) {
-      return res.send(SystemResponse.internalServerError('Error', err.message));
+      return res.status(err.status).send(SystemResponse.internalServerError('Error', err.response));
     }
   }
 
@@ -86,6 +87,30 @@ export class BlogController {
       });
       return res.send(
         SystemResponse.success('single task fetched successfully', singleBlog),
+      );
+    } catch (err) {
+      return res.status(err.status).send(SystemResponse.internalServerError('Error', err.response));
+    }
+  }
+
+  
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateBlog: UpdateBlogDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const { logger } = res.locals;
+    try {
+      const updatedTodo = await this.blogService.update(id, updateBlog);
+      logger.info({
+        message: 'Task updated successfully',
+        data: [],
+        option: [],
+      });
+      return res.send(
+        SystemResponse.success('Task updated successfully', updatedTodo),
       );
     } catch (err) {
       return res.send(SystemResponse.internalServerError('Error', err.message));
@@ -110,7 +135,7 @@ export class BlogController {
         SystemResponse.success('Task deleted successfully', data),
       );
     } catch (err) {
-      return res.send(SystemResponse.internalServerError('Error', err.message));
+      return res.status(err.status).send(SystemResponse.internalServerError('Error', err.response));
     }
   }
 }

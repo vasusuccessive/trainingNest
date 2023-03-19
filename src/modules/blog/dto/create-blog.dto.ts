@@ -1,18 +1,5 @@
-import { IsDefined, IsString, IsArray, ValidateNested } from 'class-validator';
+import { IsDefined, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-
-class NestedObject {
-  @ApiProperty()
-  @IsDefined()
-  @IsString()
-  by: string;
-  
-  @ApiProperty()
-  @IsDefined()
-  @IsString()
-  timestamp: string;
-}
 
 export class BlogDto {
   @ApiProperty()
@@ -24,12 +11,4 @@ export class BlogDto {
   @IsDefined()
   @IsString()
   description: string;
-
-  @ApiProperty()
-  @IsDefined()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => NestedObject)
-  comment: string;
-
 }

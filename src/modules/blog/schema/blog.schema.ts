@@ -5,14 +5,24 @@ export type BlogDocument = Blog & Document;
 
 @Schema()
 export class Blog {
-  @Prop()
+  @Prop({ required: true })
   title: string;
 
-  @Prop()
+  @Prop({ required: true })
   description: string;
 
+  @Prop({ default: [] })
+  comments: { text: string; author: string }[];
+
   @Prop()
-  comment: string;
+  likes: string;
+
+  @Prop()
+  by: string;
+
+  @Prop()
+  timeStamp: string;
 }
+
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);

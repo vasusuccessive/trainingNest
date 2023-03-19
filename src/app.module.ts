@@ -3,10 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configurations from './config/configuration';
-import { BlogModule, UserModule } from './modules';
+import { BlogModule, UserModule, AuthModule } from './modules';
 
 @Module({
-  imports: [MongooseModule.forRoot(configurations.mongo), BlogModule, UserModule],
+  imports: [MongooseModule.forRoot(configurations.mongo), BlogModule, UserModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

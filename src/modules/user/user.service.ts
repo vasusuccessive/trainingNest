@@ -11,15 +11,14 @@ export class UserService {
     private readonly userModel: mongoose.Model<User>,
   ) {}
 
-  async create(userDto: UserDto): Promise<User> {
-    const { email } = userDto;
+  async create(userDto: UserDto, Hashpassword: string, res: any): Promise<User> {
+    const { email, name } = userDto;
     const single = await this.userModel.find({email: email});
     if(single.length !== 0) {
-      throw new NotFoundException('User is already exist!');
+      throw new Error('User is already exist!')
     }else {
-      return await this.userModel.create({
-        ...userDto,
-      });
+      const createdUser = new this.userModel({ email, password: Hashpassword, name });
+      return createdUser.save();;
     }
   }
 

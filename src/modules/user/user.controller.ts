@@ -22,29 +22,6 @@ import { Request, Response } from 'express';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  @UsePipes(new ValidationPipe())
-  async create(
-    @Req() req: Request,
-    @Res() res: Response,
-    @Body() userDto: UserDto,
-  ) {
-    const { logger } = res.locals;
-    try {
-      const userAdded = await this.userService.create(userDto);
-      logger.info({
-        message: 'User added is successfully',
-        data: [],
-        option: [],
-      });
-      return res.send(
-        SystemResponse.success('User added successfully!', userAdded),
-      );
-    } catch (err) {
-      return res.send(SystemResponse.internalServerError('Error', err.message));
-    }
-  }
-
   @Get()
   async findAll(
     @Query('page') page: number,

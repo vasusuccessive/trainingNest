@@ -1,19 +1,15 @@
-import { IsDefined, IsString, Length, IsEmail } from 'class-validator';
+import { IsEmail, IsString, Length, IsDefined } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserDto {
+export class SignUpDto {
   @ApiProperty()
   @IsDefined()
   @IsString()
   name: string
 
-  @ApiProperty()
-  @IsDefined()
   @IsEmail()
   email: string;
 
-  @ApiProperty()
-  @IsDefined()
   @IsString()
   @Length(6, 20)
   password: string;
@@ -26,4 +22,8 @@ export class LoginDto {
   @IsString()
   @Length(6, 20)
   password: string;
+}
+
+export class JwtPayloadDto {
+  email: string;
 }
